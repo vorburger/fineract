@@ -89,6 +89,9 @@ Apache Fineract / Mifos X Demo (November 2016) - <https://www.youtube.com/watch?
 Governance and Policies
 =======================
 
+[Becoming a Committer](https://cwiki.apache.org/confluence/display/FINERACT/Becoming+a+Committer)
+documents the process through which you can become a committer in this project.
+
 This project does not accept "code dumps" 
 i.e. massive huge Pull Requests of major new 
 features consisting of thousands of lines of new code,
