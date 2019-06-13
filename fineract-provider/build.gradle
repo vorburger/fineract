@@ -28,7 +28,7 @@ buildscript {
   }
 
   dependencies {
-     classpath 'org.gradle.api.plugins:gradle-tomcat-plugin:1.0',
+     classpath 'com.bmuschko:gradle-tomcat-plugin:2.5',
                'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0',
                'org.zeroturnaround:gradle-jrebel-plugin:1.1.2',
                'org.springframework.boot:spring-boot-gradle-plugin:2.1.3.RELEASE' // also change springDataJpaVersion below
@@ -45,7 +45,7 @@ apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'tomcat'
+apply plugin: 'com.bmuschko.tomcat'
 apply plugin: 'project-report'
 apply plugin: 'java'
 apply plugin: 'openjpa'
@@ -367,7 +367,6 @@ task integrationTest(type:Test){
     it.dependsOn war
     doFirst {
         tomcatRunWar.daemon = true
-        tomcatRunWar.execute()
     }
     testClassesDirs = project.sourceSets.integrationTest.output.classesDirs
     classpath = project.sourceSets.integrationTest.runtimeClasspath
