@@ -18,7 +18,7 @@
  */
 description = '''\
 Run as:
-gradle clean tomcatrunwar
+gradle clean bootRun
 '''
 
 project.ext.springBootVersion = '1.2.8.RELEASE'
@@ -349,13 +349,12 @@ task tomcatStopAfterIntegrationTest(type: com.bmuschko.gradle.tomcat.tasks.Tomca
 sourceSets.main.output.resourcesDir = sourceSets.main.java.outputDir
 sourceSets.test.output.resourcesDir = sourceSets.test.java.outputDir
 
-/* Exclude maria db and embedded tomcat related files for non dev builds */
+/* FINERACT-730: Exclude MariaDB4j for non dev builds */
 if (!(project.hasProperty('env') && project.getProperty('env') == 'dev')) {
 sourceSets {
     main {
         java {
-            exclude '**/Server*'
-            exclude '**/MariaDB4j*'
+            exclude '**/*MariaDB4j*'
             exclude '**/EmbeddedTomcatWithSSLConfiguration.java'
         }
     }
@@ -451,8 +450,8 @@ def qualifyVersionIfNecessary(version) {
 }
 
 springBoot {
-    mainClassName = 'org.apache.fineract.ServerWithMariaDB4jApplication'
+    mainClassName = 'org.apache.fineract.ServerApplication'
 }
 bootWar {
-    mainClassName = 'org.apache.fineract.ServerWithMariaDB4jApplication'
+    mainClassName = 'org.apache.fineract.ServerApplication'
 }
