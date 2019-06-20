@@ -20,18 +20,16 @@ package org.apache.fineract.common;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.path.json.JsonPath.from;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
+import io.restassured.path.json.exception.JsonPathException;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.conn.HttpHostConnectException;
-
-
 
 /**
  * Util for RestAssured tests. This class here in src/test is copy/pasted :(
@@ -45,7 +43,7 @@ public class Utils {
 
     public static final String TENANT_IDENTIFIER = "tenantIdentifier=default";
 
-    private static final String LOGIN_URL = "/fineract-provider/api/v1/authentication?username=mifos&password=password&" + TENANT_IDENTIFIER;
+    private static final String LOGIN_URL = "/api/v1/authentication?username=mifos&password=password&" + TENANT_IDENTIFIER;
 
     public static void initializeRESTAssured() {
         RestAssured.baseURI = "https://localhost";
@@ -55,17 +53,23 @@ public class Utils {
     }
 
     public static String loginIntoServerAndGetBase64EncodedAuthenticationKey() {
+        String json = "(Login not yet attempted)";
         try {
             System.out.println("-----------------------------------LOGIN-----------------------------------------");
-            final String json = RestAssured.post(LOGIN_URL).asString();
-            assertThat("Failed to login into fineract platform", StringUtils.isBlank(json), is(false));
+            Response response = RestAssured.get(LOGIN_URL); // get instead post to follow 301 redirect in case or errors
+            json = response.asString();
+            if (response.statusCode() != 200 || StringUtils.isBlank(json)) {
+                fail("Failed to login into fineract platform, POST to: " + LOGIN_URL + ", response status code: " + response.statusCode() + ", response body: " + response.body().prettyPrint());
+            }
             return JsonPath.with(json).get("base64EncodedAuthenticationKey");
         } catch (final Exception e) {
             if (e instanceof HttpHostConnectException) {
                 final HttpHostConnectException hh = (HttpHostConnectException) e;
                 fail("Failed to connect to fineract platform:" + hh.getMessage());
             }
-
+            if (e instanceof JsonPathException) {
+                fail("Failed to connect to fineract platform, not JSON: " + json);
+            }
             throw new RuntimeException(e);
         }
     }

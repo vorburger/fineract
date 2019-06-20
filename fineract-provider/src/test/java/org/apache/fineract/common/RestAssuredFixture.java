@@ -36,8 +36,8 @@ public class RestAssuredFixture {
 
     private final int httpPort;
 
-    private ResponseSpecification responseSpec;
-    private RequestSpecification requestSpec;
+    private final ResponseSpecification responseSpec;
+    private final RequestSpecification requestSpec;
 
     public RestAssuredFixture(int httpPort) {
         super();
@@ -59,7 +59,7 @@ public class RestAssuredFixture {
 
     private String getApiPath(String apiPath) {
         Preconditions.checkArgument(apiPath.startsWith("/"), "trailingApiUrl must start with slash: " + apiPath);
-        return "/fineract-provider/api/v1" + apiPath + "?tenantIdentifier=default";
+        return "/api/v1" + apiPath + "?tenantIdentifier=default";
     }
 
     protected String getApiUrl(String apiPath) {
