@@ -39,6 +39,7 @@ import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.specification.RequestSpecification;
 import com.jayway.restassured.specification.ResponseSpecification;
+
 /**
  * Util for RestAssured tests. This class here in src/integrationTest is
  * copy/pasted to src/test; please keep them in sync.
@@ -55,9 +56,8 @@ public class Utils {
     private static final String LOGIN_URL = "/fineract-provider/api/v1/authentication?username=mifos&password=password&" + TENANT_IDENTIFIER;
 
     public static void initializeRESTAssured() {
-        RestAssured.baseURI = "https://localhost";
-        RestAssured.port = 8443;
-        RestAssured.keystore("src/main/resources/keystore.jks", "openmf");
+        RestAssured.baseURI = "http://localhost";
+        RestAssured.port = 7070;
     }
 
     public static String loginIntoServerAndGetBase64EncodedAuthenticationKey() {

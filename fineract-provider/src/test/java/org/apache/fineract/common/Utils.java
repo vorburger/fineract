@@ -32,7 +32,9 @@ import java.util.Random;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.conn.HttpHostConnectException;
 
+import com.jayway.restassured.response.Response;
 import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.path.json.exception.JsonPathException;
 import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.specification.RequestSpecification;
 import com.jayway.restassured.specification.ResponseSpecification;
@@ -49,26 +51,31 @@ public class Utils {
 
     public static final String TENANT_IDENTIFIER = "tenantIdentifier=default";
 
-    private static final String LOGIN_URL = "/fineract-provider/api/v1/authentication?username=mifos&password=password&" + TENANT_IDENTIFIER;
+    private static final String LOGIN_URL = "/api/v1/authentication?username=mifos&password=password&" + TENANT_IDENTIFIER;
 
     public static void initializeRESTAssured() {
-        RestAssured.baseURI = "https://localhost";
-        RestAssured.port = 8443;
-        RestAssured.keystore("src/main/resources/keystore.jks", "openmf");
+        RestAssured.baseURI = "http://localhost";
+        RestAssured.port = 7070;
     }
 
     public static String loginIntoServerAndGetBase64EncodedAuthenticationKey() {
+        String json = "(Login not yet attempted)";
         try {
             System.out.println("-----------------------------------LOGIN-----------------------------------------");
-            final String json = RestAssured.post(LOGIN_URL).asString();
-            assertThat("Failed to login into fineract platform", StringUtils.isBlank(json), is(false));
+            Response response = RestAssured.get(LOGIN_URL); // get instead post to follow 301 redirect in case or errors
+            json = response.asString();
+            if (response.statusCode() != 200 || StringUtils.isBlank(json)) {
+                fail("Failed to login into fineract platform, POST to: " + LOGIN_URL + ", response status code: " + response.statusCode() + ", response body: " + response.body().prettyPrint());
+            }
             return JsonPath.with(json).get("base64EncodedAuthenticationKey");
         } catch (final Exception e) {
             if (e instanceof HttpHostConnectException) {
                 final HttpHostConnectException hh = (HttpHostConnectException) e;
                 fail("Failed to connect to fineract platform:" + hh.getMessage());
             }
-
+            if (e instanceof JsonPathException) {
+                fail("Failed to connect to fineract platform, not JSON: " + json);
+            }
             throw new RuntimeException(e);
         }
     }
