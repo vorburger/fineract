@@ -322,9 +322,14 @@ sourceSets {
         }
     }
     test {
-    	java {
-    		exclude '**/core/boot/tests/**'
-    	}
+        java {
+            exclude '**/core/boot/tests/**'
+        }
+    }
+    integrationTest {
+        java {
+            exclude '**/*MariaDB4j*'
+        }
     }
 }
 }

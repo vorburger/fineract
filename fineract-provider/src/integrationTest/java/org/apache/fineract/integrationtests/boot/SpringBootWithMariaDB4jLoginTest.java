@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.fineract.infrastructure.core.boot.tests;
+package org.apache.fineract.integrationtests.boot;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -31,10 +31,10 @@ import org.junit.Test;
 
 /**
  * This is an integration test for the Spring Boot launch stuff.
- * 
+ *
  * @see ServerApplication
  */
-public class SpringBootServerLoginTest extends AbstractSpringBootWithMariaDB4jIntegrationTest {
+public class SpringBootWithMariaDB4jLoginTest extends AbstractSpringBootWithMariaDB4jIntegrationTest {
 
     protected RestAssuredFixture util;
 
@@ -45,5 +45,4 @@ public class SpringBootServerLoginTest extends AbstractSpringBootWithMariaDB4jIn
         List<Map<String, String>> response = util.httpGet("/users");
         assertThat(response.get(0).get("username"), is("mifos"));
     }
-
 }

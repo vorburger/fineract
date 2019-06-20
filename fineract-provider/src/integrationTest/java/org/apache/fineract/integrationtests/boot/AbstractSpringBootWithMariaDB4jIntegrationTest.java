@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.fineract.infrastructure.core.boot.tests;
+package org.apache.fineract.integrationtests.boot;
 
 import org.apache.fineract.ServerWithMariaDB4jApplication;
 import org.junit.runner.RunWith;
