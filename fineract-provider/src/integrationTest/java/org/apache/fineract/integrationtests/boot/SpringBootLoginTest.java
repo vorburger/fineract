@@ -38,7 +38,7 @@ public class SpringBootLoginTest extends AbstractSpringBootIntegrationTest {
 
     @Test
     public void hasPlatformStarted() {
-        util = new RestAssuredFixture(7070);
+        util = new RestAssuredFixture(8443);
         List<Map<String, String>> response = util.httpGet("/users");
         assertThat(response.get(0).get("username"), is("mifos"));
     }
