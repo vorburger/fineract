@@ -2,6 +2,7 @@ Apache Fineract: A Platform for Microfinance [![Build Status](https://travis-ci.
 ============
 Fineract is a mature platform with open APIs that provides a reliable, robust, and affordable core banking solution for financial institutions offering services to the world’s 2 billion underbanked and unbanked. 
 
+
 Requirements
 ============
 * Java >= 1.8 (Oracle JVMs have been tested)
@@ -17,6 +18,16 @@ and stop and destroy it like this:
 
 Beware that this database container database keeps its state inside the container and not on the host filesystem.  It is lost when you destroy (rm) this container.  This is typically fine for development.  See [Caveats: Where to Store Data on the database container documentation](https://hub.docker.com/_/mysql) re. how to make it persistant instead of ephemeral.
 
+
+Instructions how to run for local development
+============
+
+Run the following commands:
+1. `./gradlew createDB -PdbName=mifosplatform-tenants`
+1. `./gradlew createDB -PdbName=mifostenant-default`
+1. `./gradlew bootRun`
+
+
 Instructions to download gradle wrapper
 ============
 The file fineract-provider/gradle/wrapper/gradle-wrapper.jar binary is checked into this projects's Git source repository,
@@ -29,12 +40,14 @@ wget --no-check-certificate -P fineract-provider/gradle/wrapper https://github.c
 
 curl --insecure -L https://github.com/apache/fineract/raw/develop/fineract-provider/gradle/wrapper/gradle-wrapper.jar > fineract-provider/gradle/wrapper/gradle-wrapper.jar
 
+
 Instructions to run Apache RAT (Release Audit Tool)
 ============
 1. Extract the archive file to your local directory.
 2. Run `./gradlew rat`. A report will be generated under build/reports/rat/rat-report.txt
 
-Instructions to build a war file
+
+Instructions to build a WAR file
 ============
 1. Extract the archive file to your local directory.
 2. Run `./gradlew clean war` or `./gradlew build` to build deployable war file which will be created at build/libs directory.
@@ -75,6 +88,7 @@ The latest stable release can be viewed on the develop branch: [Latest Release o
 
 The progress of this project can be viewed here: [View change log](https://github.com/apache/fineract/blob/develop/CHANGELOG.md "Latest release change log")
 
+
 License
 ============
 
@@ -95,11 +109,13 @@ Apache Fineract Platform API
 
 The API for the Fineract-platform (project named 'Apache Fineract') is documented in the API-docs under <b><i>Full API Matrix</i></b> and can be viewed [here](https://demo.openmf.org/api-docs/apiLive.htm "API Documentation").
 
+
 Online Demos
 ============
 
 * [Community App](https://demo.openmf.org "Reference Client App")
 > For this demo, a demo account is also provided for users to experience the functionality of this Community App. Users can use "mifos" for USERNAME and "password" for PASSWORD(without quotation marks). 
+
 
 Developers
 ============
@@ -115,10 +131,12 @@ Roadmap
 
 [Project Release Roadmap on JIRA (Detailed View)](https://issues.apache.org/jira/browse/FINERACT-268?jql=project%20%3D%20FINERACT "Project Release Roadmap on JIRA (Detailed View)")
 
+
 Video Demonstration
 ============
 
 Apache Fineract / Mifos X Demo (November 2016) - <https://www.youtube.com/watch?v=h61g9TptMBo>
+
 
 Governance and Policies
 =======================
@@ -128,6 +146,7 @@ documents the process through which you can become a committer in this project.
 
 [Pull Request Size Limit](https://cwiki.apache.org/confluence/display/FINERACT/Pull+Request+Size+Limit)
 documents that we cannot accept huge "code dump" Pull Requests, with some related suggestions.
+
 
 More Information
 ============
