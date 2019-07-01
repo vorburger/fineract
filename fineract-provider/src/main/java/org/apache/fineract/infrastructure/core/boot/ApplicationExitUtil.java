@@ -21,7 +21,6 @@ package org.apache.fineract.infrastructure.core.boot;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import org.springframework.context.ConfigurableApplicationContext;
 
 public abstract class ApplicationExitUtil {
@@ -29,18 +28,30 @@ public abstract class ApplicationExitUtil {
     private ApplicationExitUtil() {}
 
     public static void waitForKeyPressToCleanlyExit(ConfigurableApplicationContext ctx) throws IOException {
+        if (System.console() == null) {
+            // This is important for running under "./gradlew bootRun", or in a container
+            System.out.println("No Console available, running until stopped by signal/Ctrl-C...");
+            boolean interrupted = false;
+            do {
+                try {
+                    Thread.sleep(Long.MAX_VALUE);
+                } catch (InterruptedException e) {
+                    interrupted = true;
+                }
+            } while (!interrupted);
+        } else {
+            // NOTE: In Eclipse, the Shutdown Hooks are not invoked on exit (red
+            // button).. In the case of MariaDB4j that's a problem because then the
+            // mysqld won't be stopped, so:
+            // (@see https://bugs.eclipse.org/bugs/show_bug.cgi?id=38016)
+            System.out.println("\nHit Enter to quit...");
+            // NOTE: In Eclipse, System.console() is not available.. so:
+            // (@see https://bugs.eclipse.org/bugs/show_bug.cgi?id=122429)
+            BufferedReader d = new BufferedReader(new InputStreamReader(System.in));
+            d.readLine();
 
-        // NOTE: In Eclipse, the Shutdown Hooks are not invoked on exit (red
-        // button).. In the case of MariaDB4j that's a problem because then the
-        // mysqld won't be stopped, so:
-        // (@see https://bugs.eclipse.org/bugs/show_bug.cgi?id=38016)
-        System.out.println("\nHit Enter to quit...");
-        // NOTE: In Eclipse, System.console() is not available.. so:
-        // (@see https://bugs.eclipse.org/bugs/show_bug.cgi?id=122429)
-        BufferedReader d = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
-        d.readLine();
-
-        ctx.stop();
-        ctx.close();
+            ctx.stop();
+            ctx.close();
+        }
     }
 }

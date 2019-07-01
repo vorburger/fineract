@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Import;
  * Fineract main() application which launches Fineract in an embedded Tomcat HTTP
  * (using Spring Boot).
  *
- * The DataSource used is a to a "normal" external database (not use MariaDB4j).
+ * The DataSource used is to a "normal" external database (without MariaDB4j).
  * This DataSource can be configured with parameters, see {@link DataSourceProperties}.
  *
  * You can easily launch this via Debug as Java Application in your IDE -
