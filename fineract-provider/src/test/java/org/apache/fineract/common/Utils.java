@@ -51,18 +51,19 @@ public class Utils {
 
     public static final String TENANT_IDENTIFIER = "tenantIdentifier=default";
 
-    private static final String LOGIN_URL = "/api/v1/authentication?username=mifos&password=password&" + TENANT_IDENTIFIER;
+    private static final String LOGIN_URL = "/fineract-provider/api/v1/authentication?username=mifos&password=password&" + TENANT_IDENTIFIER;
 
     public static void initializeRESTAssured() {
-        RestAssured.baseURI = "http://localhost";
-        RestAssured.port = 7070;
+        RestAssured.baseURI = "https://localhost";
+        RestAssured.port = 8443;
     }
 
     public static String loginIntoServerAndGetBase64EncodedAuthenticationKey() {
         String json = "(Login not yet attempted)";
         try {
             System.out.println("-----------------------------------LOGIN-----------------------------------------");
-            Response response = RestAssured.get(LOGIN_URL); // get instead post to follow 301 redirect in case or errors
+            initializeRESTAssured(); // REPEAT, because it was changed - what a mess, due to static
+            Response response = RestAssured.post(LOGIN_URL);
             json = response.asString();
             if (response.statusCode() != 200 || StringUtils.isBlank(json)) {
                 fail("Failed to login into fineract platform, POST to: " + LOGIN_URL + ", response status code: " + response.statusCode() + ", response body: " + response.body().prettyPrint());
