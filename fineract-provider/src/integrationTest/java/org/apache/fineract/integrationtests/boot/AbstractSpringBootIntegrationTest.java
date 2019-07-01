@@ -18,8 +18,7 @@
  */
 package org.apache.fineract.integrationtests.boot;
 
-import org.apache.fineract.infrastructure.core.boot.AbstractApplicationConfiguration;
-import org.apache.fineract.infrastructure.core.boot.db.DataSourceConfiguration;
+import org.apache.fineract.ServerApplication;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -31,12 +30,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 @ActiveProfiles("basicauth")
 @RunWith(SpringJUnit4ClassRunner.class)
-@IntegrationTest({ "server.port=7070", /* "server.contextPath=/fineract-provider", */ "management.port=0" })
-@SpringApplicationConfiguration(classes = AbstractSpringBootIntegrationTest.Configuration.class)
+@IntegrationTest({ "server.port=7070", "server.contextPath=/fineract-provider", "management.port=0" })
+@SpringApplicationConfiguration(classes = ServerApplication.Configuration.class)
 public abstract class AbstractSpringBootIntegrationTest {
-
-    @Import({ DataSourceConfiguration.class })
-    static class Configuration extends AbstractApplicationConfiguration { }
 
     // do NOT put any helper methods here!
     // it's much better to use composition instead of inheritance

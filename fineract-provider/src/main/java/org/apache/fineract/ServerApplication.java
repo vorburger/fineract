@@ -46,7 +46,7 @@ import org.springframework.context.annotation.Import;
 public class ServerApplication {
 
 	@Import({ DataSourceConfiguration.class, EmbeddedTomcatWithSSLConfiguration.class })
-	private static class Configuration extends AbstractApplicationConfiguration { }
+	public static class Configuration extends AbstractApplicationConfiguration { }
 
 	public static void main(String[] args) throws Exception {
 		ConfigurableApplicationContext ctx = SpringApplication.run(Configuration.class, args);
