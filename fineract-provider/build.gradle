@@ -318,12 +318,6 @@ sourceSets {
     main {
         java {
             exclude '**/*MariaDB4j*'
-            exclude '**/EmbeddedTomcatWithSSLConfiguration.java'
-        }
-    }
-    test {
-        java {
-            exclude '**/core/boot/tests/**'
         }
     }
     integrationTest {
