@@ -52,10 +52,8 @@ apply plugin: 'openjpa'
 // apply plugin: 'pmd'
 // apply plugin: 'findbugs'
 
-/* define the valid syntax level for source files */
-sourceCompatibility = JavaVersion.VERSION_1_8
-/* define binary compatibility version */
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_11  // defines the valid syntax level for Java source files
+targetCompatibility = JavaVersion.VERSION_11  // define Java class files binary compatibility version
 
 project.ext.springBootVersion = '1.2.8.RELEASE'
 project.ext.springVersion = '4.1.9.RELEASE'
@@ -179,8 +177,6 @@ configurations {
 		exclude module: 'bval-jsr303'
 		exclude module: 'c3p0'
 		exclude module: 'stax-api'
-		exclude module: 'jaxb-api'
-		exclude module: 'jaxb-impl'
 		exclude module: 'jboss-logging'
 		exclude module: 'itext-rtf'
 		exclude module: 'classworlds'
@@ -551,3 +547,4 @@ springBoot {
 bootWar {
     mainClassName = 'org.apache.fineract.ServerWithMariaDB4jApplication'
 }
+
