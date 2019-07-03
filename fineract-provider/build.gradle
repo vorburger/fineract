@@ -18,7 +18,7 @@
  */
 description = '''\
 Run as:
-gradle clean tomcatrunwar
+gradle clean tomcatrun
 '''
 buildscript {
   repositories {
@@ -316,15 +316,6 @@ tomcatRun {
     stopPort = 8081
     stopKey=   'stopKey'
     enableSSL = true
-    configFile = file('src/test/resources/META-INF/context.xml')
-}
-
-tomcatRunWar {
-    httpPort = 8080
-    httpsPort = 8443
-    stopPort = 8081
-    stopKey=   'stopKey'
-    enableSSL = true
     keystoreFile = file('src/main/resources/keystore.jks')
     keystorePass = 'openmf'
     configFile = file('src/test/resources/META-INF/context.xml')
@@ -368,7 +359,7 @@ task integrationTest(type:Test){
     description = "Run integration tests (located in src/integrationTest/java). Starts tomcat in daemon mode before executing the tests."
     it.dependsOn war
     doFirst {
-        tomcatRunWar.daemon = true
+        tomcatRun.daemon = true
     }
     testClassesDirs = project.sourceSets.integrationTest.output.classesDirs
     classpath = project.sourceSets.integrationTest.runtimeClasspath
