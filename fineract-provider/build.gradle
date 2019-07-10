@@ -169,7 +169,7 @@ rat {
 
 configurations {
 	providedRuntime // needed for Spring Boot executable WAR
-    providedCompile
+	providedCompile
 	compile() {
 		exclude module: 'hibernate-entitymanager'
 		exclude module: 'hibernate-validator'
@@ -187,6 +187,9 @@ configurations {
 	}
 	runtime
 	all*.exclude group: 'commons-logging'
+	all*.exclude module: 'tomcat-embed-logging-juli'
+	all*.exclude module: 'tomcat-juli'
+	all*.exclude module: 'jul-to-slf4j'
 }
 /* Pick up dependencies based on the environemnt, defaults to production */
 if (project.hasProperty('env') && project.getProperty('env') == 'dev') {
