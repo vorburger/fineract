@@ -22,11 +22,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+
+import javax.xml.bind.annotation.XmlRootElement;  // TODO can probably be removed again?
 
 import io.swagger.annotations.*;
 import org.apache.fineract.infrastructure.core.data.EnumOptionData;
@@ -50,12 +53,35 @@ import org.springframework.stereotype.Component;
 
 import com.sun.jersey.core.util.Base64;
 
-@Path("/authentication")
 @Component
-@Profile("basicauth")
 @Scope("singleton")
+@Profile("basicauth")
+@Path("/authentication")
 @Api(value = "Authentication HTTP Basic", description = "An API capability that allows client applications to verify authentication details using HTTP Basic Authentication.")
 public class AuthenticationApiResource {
+
+    @XmlRootElement // TODO can probably be removed again?
+    @ApiModel(value = "AuthenticateRequest")
+    public static class AuthenticateRequest {
+        private String username;
+        private String password;
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+    }
 
     private final DaoAuthenticationProvider customAuthenticationProvider;
     private final ToApiJsonSerializer<AuthenticatedUserData> apiJsonSerializerService;
@@ -74,16 +100,16 @@ public class AuthenticationApiResource {
     }
 
     @POST
+    @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     @ApiOperation(value = "Verify authentication", notes = "Authenticates the credentials provided and returns the set roles and permissions allowed.")
     @ApiResponses({@ApiResponse(code = 200, message = "", response = AuthenticationApiResourceSwagger.PostAuthenticationResponse.class), @ApiResponse(code = 400, message = "Unauthenticated. Please login")})
-    public String authenticate(@QueryParam("username") @ApiParam(value = "username") final String username, @QueryParam("password") @ApiParam(value = "password") final String password) {
-
-        final Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
+    public String authenticate(final AuthenticateRequest request) {
+        final Authentication authentication = new UsernamePasswordAuthenticationToken(request.username, request.password);
         final Authentication authenticationCheck = this.customAuthenticationProvider.authenticate(authentication);
 
         final Collection<String> permissions = new ArrayList<>();
-        AuthenticatedUserData authenticatedUserData = new AuthenticatedUserData(username, permissions);
+        AuthenticatedUserData authenticatedUserData = new AuthenticatedUserData(request.username, permissions);
 
         if (authenticationCheck.isAuthenticated()) {
             final Collection<GrantedAuthority> authorities = new ArrayList<>(authenticationCheck.getAuthorities());
@@ -91,7 +117,7 @@ public class AuthenticationApiResource {
                 permissions.add(grantedAuthority.getAuthority());
             }
 
-            final byte[] base64EncodedAuthenticationKey = Base64.encode(username + ":" + password);
+            final byte[] base64EncodedAuthenticationKey = Base64.encode(request.username + ":" + request.password);
 
             final AppUser principal = (AppUser) authenticationCheck.getPrincipal();
             final Collection<RoleData> roles = new ArrayList<>();
@@ -111,11 +137,11 @@ public class AuthenticationApiResource {
             boolean isTwoFactorRequired = twoFactorUtils.isTwoFactorAuthEnabled() && !
                     principal.hasSpecificPermissionTo(TwoFactorConstants.BYPASS_TWO_FACTOR_PERMISSION);
             if (this.springSecurityPlatformSecurityContext.doesPasswordHasToBeRenewed(principal)) {
-                authenticatedUserData = new AuthenticatedUserData(username, principal.getId(),
+                authenticatedUserData = new AuthenticatedUserData(request.username, principal.getId(),
                         new String(base64EncodedAuthenticationKey), isTwoFactorRequired);
             } else {
 
-                authenticatedUserData = new AuthenticatedUserData(username, officeId, officeName, staffId, staffDisplayName,
+                authenticatedUserData = new AuthenticatedUserData(request.username, officeId, officeName, staffId, staffDisplayName,
                         organisationalRole, roles, permissions, principal.getId(),
                         new String(base64EncodedAuthenticationKey), isTwoFactorRequired);
             }
