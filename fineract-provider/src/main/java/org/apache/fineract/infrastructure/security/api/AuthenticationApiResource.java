@@ -22,10 +22,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import io.swagger.annotations.*;
@@ -74,10 +75,11 @@ public class AuthenticationApiResource {
     }
 
     @POST
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces({ MediaType.APPLICATION_JSON })
     @ApiOperation(value = "Verify authentication", notes = "Authenticates the credentials provided and returns the set roles and permissions allowed.")
     @ApiResponses({@ApiResponse(code = 200, message = "", response = AuthenticationApiResourceSwagger.PostAuthenticationResponse.class), @ApiResponse(code = 400, message = "Unauthenticated. Please login")})
-    public String authenticate(@QueryParam("username") @ApiParam(value = "username") final String username, @QueryParam("password") @ApiParam(value = "password") final String password) {
+    public String authenticate(@FormParam("username") @ApiParam(value = "username") final String username, @FormParam("password") @ApiParam(value = "password") final String password) {
 
         final Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
         final Authentication authenticationCheck = this.customAuthenticationProvider.authenticate(authentication);
