@@ -20,6 +20,7 @@ package org.apache.fineract.portfolio.shareaccounts.domain;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,8 +28,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.fineract.infrastructure.core.domain.AbstractPersistableCustom;
 import org.apache.fineract.organisation.monetary.domain.MonetaryCurrency;
 import org.apache.fineract.organisation.monetary.domain.Money;
@@ -94,12 +93,10 @@ public class ShareAccountCharge extends AbstractPersistableCustom<Long> {
     }
 
     protected ShareAccountCharge() {
-        //
     }
 
     private ShareAccountCharge(final ShareAccount shareAccount, final Charge chargeDefinition, final BigDecimal amount,
             final ChargeTimeType chargeTime, final ChargeCalculationType chargeCalculation, final boolean status) {
-
         this.shareAccount = shareAccount;
         this.charge = chargeDefinition;
         this.chargeTime = (chargeTime == null) ? chargeDefinition.getChargeTimeType() : chargeTime.getValue();
@@ -217,7 +214,6 @@ public class ShareAccountCharge extends AbstractPersistableCustom<Long> {
     }
 
     private BigDecimal calculateOutstanding() {
-
         BigDecimal amountPaidLocal = BigDecimal.ZERO;
         if (this.amountPaid != null) {
             amountPaidLocal = this.amountPaid;
@@ -269,7 +265,6 @@ public class ShareAccountCharge extends AbstractPersistableCustom<Long> {
     }
 
     public boolean isPaidOrPartiallyPaid(final MonetaryCurrency currency) {
-
         final Money amountWaivedOrWrittenOff = getAmountWaived(currency).plus(getAmountWrittenOff(currency));
         return Money.of(currency, this.amountPaid).plus(amountWaivedOrWrittenOff).isGreaterThanZero();
     }
@@ -414,5 +409,35 @@ public class ShareAccountCharge extends AbstractPersistableCustom<Long> {
 
     public void setActive(boolean active) {
         this.active = active ;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ShareAccountCharge)) return false;
+        ShareAccountCharge that = (ShareAccountCharge) o;
+
+        return Objects.equals(shareAccount != null ? shareAccount.getId() : null, that.shareAccount != null ? that.shareAccount.getId() : null)
+        		&& Objects.equals(charge != null ? charge.getId() : null, that.charge != null ? that.charge.getId() : null)
+        		&& Objects.equals(chargeTime, that.chargeTime)
+        		&& Objects.equals(chargeCalculation, that.chargeCalculation)
+        		&& Objects.equals(percentage, that.percentage)
+        		&& Objects.equals(amountPercentageAppliedTo, that.amountPercentageAppliedTo)
+        		&& Objects.equals(amount, that.amount)
+        		&& Objects.equals(amountPaid, that.amountPaid)
+        		&& Objects.equals(amountWaived, that.amountWaived)
+        		&& Objects.equals(amountWrittenOff, that.amountWrittenOff)
+        		&& Objects.equals(amountOutstanding, that.amountOutstanding)
+        		&& Objects.equals(paid, that.paid)
+        		&& Objects.equals(waived, that.waived)
+        		&& Objects.equals(active, that.active)
+        		&& Objects.equals(amountOrPercentage, that.amountOrPercentage);
+    }
+
+    @Override
+    public int hashCode() {
+		return Objects.hash(shareAccount != null ? shareAccount.getId() : null, charge != null ? charge.getId() : null,
+				chargeTime, chargeCalculation, percentage, amountPercentageAppliedTo, amount, amountPaid, amountWaived,
+				amountWrittenOff, amountOutstanding, paid, waived, active, amountOrPercentage);
     }
 }
