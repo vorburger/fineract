@@ -20,9 +20,7 @@ package org.apache.fineract.integrationtests.boot;
 
 import org.apache.fineract.ServerApplication;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -30,8 +28,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 @ActiveProfiles("basicauth")
 @RunWith(SpringJUnit4ClassRunner.class)
-@IntegrationTest({ "server.port=7070", "server.contextPath=/fineract-provider", "management.port=0" })
-@SpringApplicationConfiguration(classes = ServerApplication.Configuration.class)
+@SpringBootTest(classes = ServerApplication.Configuration.class, properties = { "server.port=7070", "server.contextPath=/fineract-provider", "management.port=0" })
 public abstract class AbstractSpringBootIntegrationTest {
 
     // do NOT put any helper methods here!

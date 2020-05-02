@@ -21,11 +21,11 @@ package org.apache.fineract;
 import org.apache.fineract.infrastructure.core.boot.AbstractApplicationConfiguration;
 import org.apache.fineract.infrastructure.core.boot.ApplicationExitUtil;
 import org.apache.fineract.infrastructure.core.boot.EmbeddedTomcatWithSSLConfiguration;
-import org.apache.fineract.infrastructure.core.boot.db.DataSourceConfiguration;
-import org.apache.fineract.infrastructure.core.boot.db.DataSourceProperties;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportResource;
 
 /**
  * Fineract main() application which launches Fineract in an embedded Tomcat HTTP
@@ -45,12 +45,12 @@ import org.springframework.context.annotation.Import;
  */
 public class ServerApplication {
 
-    @Import({ DataSourceConfiguration.class, EmbeddedTomcatWithSSLConfiguration.class })
+    @Import({ EmbeddedTomcatWithSSLConfiguration.class })
+    @ImportResource({ "classpath*:META-INF/spring/hikariDataSource.xml" })
     public static class Configuration extends AbstractApplicationConfiguration { }
 
     public static void main(String[] args) throws Exception {
         ConfigurableApplicationContext ctx = SpringApplication.run(Configuration.class, args);
         ApplicationExitUtil.waitForKeyPressToCleanlyExit(ctx);
     }
-
 }

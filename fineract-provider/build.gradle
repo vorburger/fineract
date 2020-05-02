@@ -134,7 +134,7 @@ dependencyManagement {
             entry 'tomcat-embed-jasper'
             entry 'tomcat-embed-logging-log4j'
         }
-        
+
     }
 }
 
@@ -329,7 +329,7 @@ modernizer {
 
     ignorePackages = []
     ignoreClassNamePatterns = [
-        '.*AbstractPersistableCustom'   
+        '.*AbstractPersistableCustom'
     ]
     ignoreGeneratedClasses = true
 
@@ -466,14 +466,12 @@ if (!(project.hasProperty('env') && project.getProperty('env') == 'dev')) {
     sourceSets {
         main {
             java {
-                exclude '**/Server*'
-                exclude '**/MariaDB4j*'
-                exclude '**/EmbeddedTomcatWithSSLConfiguration.java'
+                exclude '**/*MariaDB4j*'
             }
         }
-        test {
+        integrationTest {
             java {
-                exclude '**/core/boot/tests/**'
+                exclude '**/*MariaDB4j*'
             }
         }
     }
