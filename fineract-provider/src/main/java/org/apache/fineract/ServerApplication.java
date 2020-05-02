@@ -19,11 +19,9 @@
 package org.apache.fineract;
 
 import org.apache.fineract.infrastructure.core.boot.AbstractApplicationConfiguration;
-import org.apache.fineract.infrastructure.core.boot.ApplicationExitUtil;
 import org.apache.fineract.infrastructure.core.boot.EmbeddedTomcatWithSSLConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 
@@ -50,7 +48,6 @@ public class ServerApplication {
     public static class Configuration extends AbstractApplicationConfiguration { }
 
     public static void main(String[] args) throws Exception {
-        ConfigurableApplicationContext ctx = SpringApplication.run(Configuration.class, args);
-        ApplicationExitUtil.waitForKeyPressToCleanlyExit(ctx);
+        SpringApplication.run(Configuration.class, args);
     }
 }

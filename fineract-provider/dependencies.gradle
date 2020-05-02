@@ -24,14 +24,17 @@ dependencies {
         }
 
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-    
+
     spotbugsPlugins "jp.skypencil.findbugs.slf4j:bug-pattern:1.4.2@jar"
 
     compile ("org.springframework.boot:spring-boot-starter-data-jpa")
 
+	api('org.quartz-scheduler:quartz') {
+		exclude group: 'com.zaxxer', module: 'HikariCP-java7'
+	}
+
     api(
             'com.google.code.gson:gson',
-            'org.quartz-scheduler:quartz',
             'org.apache.openjpa:openjpa',
             'org.springframework:spring-jms',
             'joda-time:joda-time',

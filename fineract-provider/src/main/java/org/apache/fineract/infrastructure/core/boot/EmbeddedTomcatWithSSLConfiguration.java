@@ -20,8 +20,6 @@ package org.apache.fineract.infrastructure.core.boot;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.http11.Http11NioProtocol;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
@@ -52,15 +50,12 @@ public class EmbeddedTomcatWithSSLConfiguration {
         Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();
         try {
             File keystore = getKeystore().getFile();
-            File truststore = keystore;
             connector.setScheme("https");
             connector.setSecure(true);
             connector.setPort(getHTTPSPort());
             protocol.setSSLEnabled(true);
             protocol.setKeystoreFile(keystore.getAbsolutePath());
             protocol.setKeystorePass(getKeystorePass());
-            protocol.setTruststoreFile(truststore.getAbsolutePath());
-            protocol.setTruststorePass(getKeystorePass());
             // ? protocol.setKeyAlias("apitester");
             return connector;
         } catch (IOException ex) {

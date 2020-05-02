@@ -18,7 +18,7 @@
  */
 description = '''\
 Run as:
-gradle clean tomcatrunwar
+gradle clean bootRun
 '''
 
 project.ext.jerseyVersion = '1.17'
@@ -129,12 +129,6 @@ dependencyManagement {
             entry 'poi-ooxml'
             entry 'poi-ooxml-schemas'
         }
-        dependencySet(group: 'org.apache.tomcat.embed', version: '7.0.94') {
-            entry 'tomcat-embed-core'
-            entry 'tomcat-embed-jasper'
-            entry 'tomcat-embed-logging-log4j'
-        }
-
     }
 }
 
@@ -564,11 +558,11 @@ def qualifyVersionIfNecessary(version) {
 }
 
 springBoot {
-    mainClassName = 'org.apache.fineract.ServerWithMariaDB4jApplication'
+    mainClassName = 'org.apache.fineract.ServerApplication'
 }
 
 bootWar {
-    mainClassName = 'org.apache.fineract.ServerWithMariaDB4jApplication'
+    mainClassName = 'org.apache.fineract.ServerApplication'
 }
 
 // To generate an HTML report instead of XML
