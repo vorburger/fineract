@@ -18,18 +18,20 @@
  */
 package org.apache.fineract.integrationtests.boot;
 
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
+
 import org.apache.fineract.ServerApplication;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
-@WebAppConfiguration
 @ActiveProfiles("basicauth")
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = ServerApplication.Configuration.class, properties = { "server.port=7070", "server.contextPath=/fineract-provider", "management.port=0" })
+@SpringBootTest(classes = ServerApplication.Configuration.class, webEnvironment = DEFINED_PORT, properties = { "server.port=7070", "server.contextPath=/fineract-provider", "management.port=0" })
 public abstract class AbstractSpringBootIntegrationTest {
+
+    // TODO use webEnvironment = MOCK instead of DEFINED_PORT (with @WebAppConfiguration)
 
     // do NOT put any helper methods here!
     // it's much better to use composition instead of inheritance
