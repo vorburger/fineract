@@ -19,21 +19,16 @@
 package org.apache.fineract.integrationtests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
-import java.util.List;
 import java.util.Map;
 import org.apache.fineract.integrationtests.common.SchedulerJobHelper;
 import org.apache.fineract.integrationtests.common.Utils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-@SuppressWarnings({ "rawtypes", "unchecked", "static-access" })
 public class SchedulerJobsTest {
 
     private RequestSpecification requestSpec;
@@ -90,33 +85,9 @@ public class SchedulerJobsTest {
     }
 
     @Test
-    @Ignore // TODO FINERACT-852 & FINERACT-922
-    public void testSchedulerJobs() throws InterruptedException {
-        // For each retrieved scheduled job (by ID)...
-        for (Integer jobId : schedulerJobHelper.getAllSchedulerJobIds()) {
-            // Retrieving Scheduler Job by ID
-            Map<String, Object> schedulerJob = schedulerJobHelper.getSchedulerJobById(jobId);
-
-            // Executing Scheduler Job
-            schedulerJobHelper.runSchedulerJob(requestSpec, jobId.toString());
-
-            // Retrieving Scheduler Job by ID
-            schedulerJob = schedulerJobHelper.getSchedulerJobById(jobId);
-            assertNotNull(schedulerJob);
-
-            // Waiting for Job to complete
-            while ((Boolean) schedulerJob.get("currentlyRunning") == true) {
-                Thread.sleep(500);
-                schedulerJob = schedulerJobHelper.getSchedulerJobById(jobId);
-                assertNotNull(schedulerJob);
-                System.out.println("Job " + jobId +" is Still Running");
-            }
-            List<Map> jobHistoryData = schedulerJobHelper.getSchedulerJobHistory(jobId);
-
-            // Verifying the Status of the Recently executed Scheduler Job
-            assertFalse("Job History is empty :(  Was it too slow? Failures in background job?", jobHistoryData.isEmpty());
-            assertEquals("Verifying Last Scheduler Job Status", "success",
-                    jobHistoryData.get(jobHistoryData.size() - 1).get("status"));
+    public void testTriggeringManualExecutionOfAllSchedulerJobs() {
+        for (String jobName : schedulerJobHelper.getAllSchedulerJobNames()) {
+            schedulerJobHelper.executeAndAwaitJob(jobName);
         }
     }
 }
