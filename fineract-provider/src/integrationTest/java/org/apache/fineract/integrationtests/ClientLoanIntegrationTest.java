@@ -37,6 +37,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.fineract.infrastructure.jobs.service.JobName;
 import org.apache.fineract.integrationtests.common.ClientHelper;
 import org.apache.fineract.integrationtests.common.SchedulerJobHelper;
 import org.apache.fineract.integrationtests.common.Utils;
@@ -57,7 +58,6 @@ import org.apache.fineract.integrationtests.common.savings.SavingsStatusChecker;
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -94,6 +94,7 @@ public class ClientLoanIntegrationTest {
         this.responseSpec = new ResponseSpecBuilder().expectStatusCode(200).build();
         this.loanTransactionHelper = new LoanTransactionHelper(this.requestSpec, this.responseSpec);
         this.accountHelper = new AccountHelper(this.requestSpec, this.responseSpec);
+        this.schedulerJobHelper = new SchedulerJobHelper(this.requestSpec);
     }
 
     @Test
@@ -2367,11 +2368,8 @@ public class ClientLoanIntegrationTest {
      * charges with calculation type flat
      */
     @Test
-    @Ignore // TODO FINERACT-885
     public void loanWithFlatCahargesAndPeriodicAccrualAccountingEnabled() {
         this.journalEntryHelper = new JournalEntryHelper(this.requestSpec, this.responseSpec);
-        this.schedulerJobHelper = new SchedulerJobHelper(this.requestSpec, this.responseSpec);
-
         final Integer clientID = ClientHelper.createClient(this.requestSpec, this.responseSpec);
         ClientHelper.verifyClientCreatedOnServer(this.requestSpec, this.responseSpec, clientID);
 
@@ -2472,12 +2470,8 @@ public class ClientLoanIntegrationTest {
          * JournalEntry(Float.valueOf("50.0"),
          * JournalEntry.TransactionType.DEBIT));
          */
-        final String jobName = "Add Accrual Transactions";
-        try {
-            this.schedulerJobHelper.executeJob(jobName);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+        schedulerJobHelper.executeAndAwaitJob(JobName.ADD_ACCRUAL_ENTRIES.toString());
 
         loanSchedule.clear();
         loanSchedule = this.loanTransactionHelper.getLoanRepaymentSchedule(this.requestSpec, this.responseSpec, loanID);
@@ -2563,10 +2557,8 @@ public class ClientLoanIntegrationTest {
      * charges with calculation type percentage of amount
      */
     @Test
-    @Ignore // TODO FINERACT-885
     public void loanWithCahargesOfTypeAmountPercentageAndPeriodicAccrualAccountingEnabled() {
         this.journalEntryHelper = new JournalEntryHelper(this.requestSpec, this.responseSpec);
-        this.schedulerJobHelper = new SchedulerJobHelper(this.requestSpec, this.responseSpec);
 
         final Integer clientID = ClientHelper.createClient(this.requestSpec, this.responseSpec);
         ClientHelper.verifyClientCreatedOnServer(this.requestSpec, this.responseSpec, clientID);
@@ -2672,12 +2664,7 @@ public class ClientLoanIntegrationTest {
          * JournalEntry.TransactionType.DEBIT));
          */
 
-        final String jobName = "Add Accrual Transactions";
-        try {
-            this.schedulerJobHelper.executeJob(jobName);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        schedulerJobHelper.executeAndAwaitJob(JobName.ADD_ACCRUAL_ENTRIES.toString());
 
         loanSchedule.clear();
         loanSchedule = this.loanTransactionHelper.getLoanRepaymentSchedule(this.requestSpec, this.responseSpec, loanID);
@@ -2763,10 +2750,8 @@ public class ClientLoanIntegrationTest {
      * charges with calculation type percentage of amount and interest
      */
     @Test
-    @Ignore // TODO FINERACT-885
     public void loanWithCahargesOfTypeAmountPlusInterestPercentageAndPeriodicAccrualAccountingEnabled() {
         this.journalEntryHelper = new JournalEntryHelper(this.requestSpec, this.responseSpec);
-        this.schedulerJobHelper = new SchedulerJobHelper(this.requestSpec, this.responseSpec);
 
         final Integer clientID = ClientHelper.createClient(this.requestSpec, this.responseSpec);
         ClientHelper.verifyClientCreatedOnServer(this.requestSpec, this.responseSpec, clientID);
@@ -2876,12 +2861,7 @@ public class ClientLoanIntegrationTest {
          * JournalEntry.TransactionType.DEBIT));
          */
 
-        final String jobName = "Add Accrual Transactions";
-        try {
-            this.schedulerJobHelper.executeJob(jobName);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        schedulerJobHelper.executeAndAwaitJob(JobName.ADD_ACCRUAL_ENTRIES.toString());
 
         loanSchedule.clear();
         loanSchedule = this.loanTransactionHelper.getLoanRepaymentSchedule(this.requestSpec, this.responseSpec, loanID);
@@ -3771,11 +3751,9 @@ public class ClientLoanIntegrationTest {
     }
 
     @Test
-    @Ignore // TODO FINERACT-885
     public void testLoanScheduleWithInterestRecalculation_WITH_REST_DAILY_INTEREST_COMPOUND_INTEREST_FEE_STRATEGY_WITH_OVERDUE_CHARGE()
             throws InterruptedException {
         this.loanTransactionHelper = new LoanTransactionHelper(this.requestSpec, this.responseSpec);
-        this.schedulerJobHelper = new SchedulerJobHelper(this.requestSpec, this.responseSpec);
 
         DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
         dateFormat.setTimeZone(Utils.getTimeZoneOfTenant());
@@ -3841,8 +3819,7 @@ public class ClientLoanIntegrationTest {
 
         verifyLoanRepaymentSchedule(loanSchedule, expectedvalues);
 
-        String JobName = "Apply penalty to overdue loans";
-        this.schedulerJobHelper.executeJob(JobName);
+        schedulerJobHelper.executeAndAwaitJob(JobName.APPLY_CHARGE_TO_OVERDUE_LOAN_INSTALLMENT.toString());
 
         loanSchedule = this.loanTransactionHelper.getLoanRepaymentSchedule(this.requestSpec, this.responseSpec, loanID);
         expectedvalues = new ArrayList<>();

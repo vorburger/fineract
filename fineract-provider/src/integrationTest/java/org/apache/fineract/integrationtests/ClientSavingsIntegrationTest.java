@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import org.apache.fineract.infrastructure.core.service.DateUtils;
+import org.apache.fineract.infrastructure.jobs.service.JobName;
 import org.apache.fineract.integrationtests.common.ClientHelper;
 import org.apache.fineract.integrationtests.common.CommonConstants;
 import org.apache.fineract.integrationtests.common.SchedulerJobHelper;
@@ -1974,8 +1975,8 @@ public class ClientSavingsIntegrationTest {
             transactionDate = transactionDate.minusDays(30);
         }
 
-        SchedulerJobHelper jobHelper = new SchedulerJobHelper(this.requestSpec, this.responseSpec);
-        jobHelper.executeJob("Update Savings Dormant Accounts");
+        SchedulerJobHelper jobHelper = new SchedulerJobHelper(this.requestSpec);
+        jobHelper.executeAndAwaitJob(JobName.UPDATE_SAVINGS_DORMANT_ACCOUNTS.toString());
 
         //VERIFY WITHIN PROVIDED RANGE DOESN'T INACTIVATE
         savingsStatusHashMap = SavingsStatusChecker.getStatusOfSavings(this.requestSpec, this.responseSpec, savingsList.get(0));

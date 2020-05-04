@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import org.apache.fineract.accounting.common.AccountingConstants.FINANCIAL_ACTIVITY;
+import org.apache.fineract.infrastructure.jobs.service.JobName;
 import org.apache.fineract.integrationtests.common.ClientHelper;
 import org.apache.fineract.integrationtests.common.CommonConstants;
 import org.apache.fineract.integrationtests.common.SchedulerJobHelper;
@@ -826,9 +827,8 @@ public class RecurringDepositTest {
          * FD account verify whether account is matured
          */
 
-        SchedulerJobHelper schedulerJobHelper =  new SchedulerJobHelper(requestSpec, responseSpec);
-        String JobName = "Update Deposit Accounts Maturity details";
-        schedulerJobHelper.executeJob(JobName);
+        SchedulerJobHelper schedulerJobHelper =  new SchedulerJobHelper(requestSpec);
+        schedulerJobHelper.executeAndAwaitJob(JobName.UPDATE_DEPOSITS_ACCOUNT_MATURITY_DETAILS.toString());
 
         HashMap accountDetails = this.recurringDepositAccountHelper.getRecurringDepositAccountById(this.requestSpec, this.responseSpec,
                 recurringDepositAccountId);
@@ -843,8 +843,6 @@ public class RecurringDepositTest {
         recurringDepositAccountStatusHashMap = RecurringDepositAccountStatusChecker.getStatusOfRecurringDepositAccount(this.requestSpec,
                 this.responseSpec, recurringDepositAccountId.toString());
         RecurringDepositAccountStatusChecker.verifyRecurringDepositAccountIsMatured(recurringDepositAccountStatusHashMap);
-
-
     }
 
 

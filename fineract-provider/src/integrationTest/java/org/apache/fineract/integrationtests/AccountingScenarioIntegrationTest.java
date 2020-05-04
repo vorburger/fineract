@@ -35,6 +35,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import org.apache.fineract.infrastructure.jobs.service.JobName;
 import org.apache.fineract.integrationtests.common.ClientHelper;
 import org.apache.fineract.integrationtests.common.CommonConstants;
 import org.apache.fineract.integrationtests.common.SchedulerJobHelper;
@@ -62,7 +63,6 @@ import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings({ "unused", "rawtypes", "unchecked", "static-access" })
@@ -118,7 +118,7 @@ public class AccountingScenarioIntegrationTest {
         this.loanTransactionHelper = new LoanTransactionHelper(this.requestSpec, this.responseSpec);
         this.accountHelper = new AccountHelper(this.requestSpec, this.responseSpec);
         this.journalEntryHelper = new JournalEntryHelper(this.requestSpec, this.responseSpec);
-        this.schedulerJobHelper = new SchedulerJobHelper(this.requestSpec, this.responseSpec);
+        this.schedulerJobHelper = new SchedulerJobHelper(this.requestSpec);
         this.periodicAccrualAccountingHelper = new PeriodicAccrualAccountingHelper(this.requestSpec, this.responseSpec);
     }
 
@@ -553,7 +553,6 @@ public class AccountingScenarioIntegrationTest {
     }
 
     @Test
-    @Ignore // TODO FINERACT-899
     public void checkPeriodicAccrualAccountingFlow() {
         final Account assetAccount = this.accountHelper.createAssetAccount();
         final Account incomeAccount = this.accountHelper.createIncomeAccount();
@@ -584,12 +583,7 @@ public class AccountingScenarioIntegrationTest {
                 new JournalEntry(this.LP_PRINCIPAL, JournalEntry.TransactionType.DEBIT), };
         this.journalEntryHelper.checkJournalEntryForAssetAccount(assetAccount, this.EXPECTED_DISBURSAL_DATE, assetAccountInitialEntry);
 
-        final String jobName = "Add Accrual Transactions";
-        try {
-            this.schedulerJobHelper.executeJob(jobName);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        schedulerJobHelper.executeAndAwaitJob(JobName.ADD_ACCRUAL_ENTRIES.toString());
 
         // MAKE 1
         System.out.println("Repayment 1 ......");
@@ -670,7 +664,6 @@ public class AccountingScenarioIntegrationTest {
     }
 
     @Test
-    @Ignore // TODO https://issues.apache.org/jira/browse/FINERACT-899
     public void checkPeriodicAccrualAccountingFlow_OVER_PAYMENT() {
         final Account assetAccount = this.accountHelper.createAssetAccount();
         final Account incomeAccount = this.accountHelper.createIncomeAccount();
@@ -701,12 +694,7 @@ public class AccountingScenarioIntegrationTest {
                 new JournalEntry(this.LP_PRINCIPAL, JournalEntry.TransactionType.DEBIT), };
         this.journalEntryHelper.checkJournalEntryForAssetAccount(assetAccount, this.EXPECTED_DISBURSAL_DATE, assetAccountInitialEntry);
 
-        final String jobName = "Add Accrual Transactions";
-        try {
-            this.schedulerJobHelper.executeJob(jobName);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        schedulerJobHelper.executeAndAwaitJob(JobName.ADD_ACCRUAL_ENTRIES.toString());
 
         // MAKE 1
         System.out.println("Repayment 1 ......");
@@ -729,7 +717,6 @@ public class AccountingScenarioIntegrationTest {
     }
 
     @Test
-    @Ignore // TODO https://issues.apache.org/jira/browse/FINERACT-899
     public void checkPeriodicAccrualAccountingTillCurrentDateFlow() {
         final Account assetAccount = this.accountHelper.createAssetAccount();
         final Account incomeAccount = this.accountHelper.createIncomeAccount();
@@ -790,12 +777,7 @@ public class AccountingScenarioIntegrationTest {
                 new JournalEntry(this.LP_PRINCIPAL, JournalEntry.TransactionType.DEBIT), };
         this.journalEntryHelper.checkJournalEntryForAssetAccount(assetAccount, LOAN_DISBURSEMENT_DATE, assetAccountInitialEntry);
 
-        final String jobName = "Add Periodic Accrual Transactions";
-        try {
-            this.schedulerJobHelper.executeJob(jobName);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        schedulerJobHelper.executeAndAwaitJob(JobName.ADD_PERIODIC_ACCRUAL_ENTRIES.toString());
 
         final ArrayList<HashMap> loanSchedule = this.loanTransactionHelper.getLoanRepaymentSchedule(this.requestSpec, this.responseSpec,
                 loanID);
