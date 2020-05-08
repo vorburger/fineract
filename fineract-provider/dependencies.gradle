@@ -18,7 +18,7 @@
  */
 dependencies {
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-    
+
     spotbugsPlugins "jp.skypencil.findbugs.slf4j:bug-pattern:1.4.2@jar"
 
     compile ('org.springframework.boot:spring-boot-starter-data-jpa') {
@@ -125,9 +125,6 @@ dependencies {
     testCompile ('io.rest-assured:rest-assured') {
         exclude group: 'commons-logging'
         exclude group: 'org.apache.sling'
-    }
-    testCompile ('com.mockrunner:mockrunner-jms') {
-        exclude group: 'regexp'
     }
     testCompile ('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'com.jayway.jsonpath', module: 'json-path'

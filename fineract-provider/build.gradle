@@ -21,7 +21,7 @@ Run as:
 gradle clean bootRun'''
 
 project.ext.jerseyVersion = '1.19.4'
-ext["groovy.version"] = '3.0.3' 
+ext["groovy.version"] = '3.0.3'
 
 
 buildscript {
@@ -105,18 +105,15 @@ dependencyManagement {
         dependency 'io.swagger:swagger-jersey-jaxrs:1.5.15'
         dependency 'jakarta.management.j2ee:jakarta.management.j2ee-api:1.1.4'
         dependency 'jakarta.jms:jakarta.jms-api:2.0.3'
-	dependency 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
+        dependency 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
         dependency 'org.apache.activemq:activemq-broker:+'
         dependency 'org.apache.bval:org.apache.bval.bundle:2.0.2'
         dependency 'junit:junit:+'
         dependency 'org.mockito:mockito-core:+'
         dependency 'org.slf4j:slf4j-simple:1.8.0-beta4'
         dependency 'org.slf4j:slf4j-api:1.8.0-beta4'
-        dependency 'com.mockrunner:mockrunner-jms:2.0.4'
         dependency 'io.github.classgraph:classgraph:4.8.43'
         dependency 'org.dom4j:dom4j:2.1.0'
-        dependency 'nekohtml:nekohtml:1.9.6.2'
-
 
         dependencySet(group: 'com.sun.jersey', version: jerseyVersion) {
             entry 'jersey-core'
@@ -432,7 +429,7 @@ task licenseFormatBuildScripts (type:nl.javadude.gradle.plugins.license.License)
 }
 licenseFormat.dependsOn licenseFormatBuildScripts
 
-configurations 
+configurations
 {
   tomcat
 }
@@ -443,17 +440,17 @@ dependencies {
 
 cargo {
   containerId "tomcat9x"
-  
+
   local {
     installer {
       installConfiguration = configurations.tomcat
       downloadDir = file("$buildDir/download")
       extractDir = file("$buildDir/tomcat")
     }
-    
+
     containerProperties {
       property 'cargo.tomcat.connector.keystoreFile', file('src/main/resources/keystore.jks')
-      property 'cargo.tomcat.connector.keystorePass', 'openmf'       	
+      property 'cargo.tomcat.connector.keystorePass', 'openmf'
       property 'cargo.tomcat.httpSecure', true
       property 'cargo.tomcat.connector.sslProtocol', 'TLS'
       property 'cargo.tomcat.connector.clientAuth', false
