@@ -105,7 +105,6 @@ dependencyManagement {
         dependency 'io.swagger:swagger-jersey-jaxrs:1.5.15'
         dependency 'jakarta.management.j2ee:jakarta.management.j2ee-api:1.1.4'
         dependency 'jakarta.jms:jakarta.jms-api:2.0.3'
-        dependency 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
         dependency 'org.apache.activemq:activemq-broker:+'
         dependency 'org.apache.bval:org.apache.bval.bundle:2.0.2'
         dependency 'junit:junit:+'
@@ -266,7 +265,6 @@ configurations {
 	compile() {
 		exclude module: 'hibernate-entitymanager'
 		exclude module: 'hibernate-validator'
-		exclude module: 'activation'
 		exclude module: 'bcmail-jdk14'
 		exclude module: 'bcprov-jdk14'
 		exclude module: 'bctsp-jdk14'

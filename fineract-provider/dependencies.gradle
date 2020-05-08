@@ -98,11 +98,7 @@ dependencies {
 
             'org.apache.bval:org.apache.bval.bundle',
 
-             // JAX-B dependencies for JDK 9+
-             "jakarta.xml.bind:jakarta.xml.bind-api",
              "org.dom4j:dom4j"
-
-
     )
     implementation ('io.swagger:swagger-jersey-jaxrs') {
 		exclude group: 'javax.validation'
@@ -125,9 +121,12 @@ dependencies {
     testCompile ('io.rest-assured:rest-assured') {
         exclude group: 'commons-logging'
         exclude group: 'org.apache.sling'
+        exclude group: 'jakarta.xml.bind' // FINERACT-940
+        exclude group: 'com.sun.xml.bind' // FINERACT-940
     }
     testCompile ('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'com.jayway.jsonpath', module: 'json-path'
+        exclude group: 'jakarta.xml.bind' // FINERACT-940
     }
     testCompile ('org.mnode.ical4j:ical4j') {
         exclude group: 'commons-logging'
