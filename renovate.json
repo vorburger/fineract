@@ -2,6 +2,9 @@
   "extends": [
     "config:base"
   ],
+  "baseBranches": [
+    "FINERACT-962_renovatebot.com"
+  ],
   "ignorePaths": [
     "docs/**"
   ]
