@@ -4,5 +4,6 @@
   ],
   "ignorePaths": [
     "docs/**"
-  ]
+  ],
+  "labels": ["renovate"]
 }
