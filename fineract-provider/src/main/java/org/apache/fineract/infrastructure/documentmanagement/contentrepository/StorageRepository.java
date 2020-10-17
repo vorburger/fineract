@@ -16,35 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.fineract.infrastructure.documentmanagement.data;
+package org.apache.fineract.infrastructure.documentmanagement.contentrepository;
 
 import java.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.fineract.infrastructure.documentmanagement.exception.ContentManagementException;
 
-public class FileData {
+/**
+ * Repository which stores Bytes under a Path in a Namespace (here typically the Fineract Tenant Identifier).
+ *
+ * @author Michael Vorburger.ch
+ */
+public interface StorageRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FileData.class);
+    void write(String namespace, String path, InputStream is) throws ContentManagementException;
 
-    private final String fileName;
-    private final String contentType;
-    private final InputStream inputStream;
+    InputStream read(String namespace, String path) throws ContentManagementException;
 
-    public FileData(final InputStream inputStream, final String fileName, final String contentType) {
-        this.inputStream = inputStream;
-        this.fileName = fileName;
-        this.contentType = contentType;
-    }
+    void delete(String namespace, String path) throws ContentManagementException;
 
-    public String contentType() {
-        return this.contentType;
-    }
-
-    public String name() {
-        return this.fileName;
-    }
-
-    public InputStream file() {
-        return this.inputStream;
-    }
 }

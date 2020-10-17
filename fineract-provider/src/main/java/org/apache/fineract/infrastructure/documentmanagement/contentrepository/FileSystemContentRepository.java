@@ -78,7 +78,7 @@ public class FileSystemContentRepository implements ContentRepository {
     }
 
     @Override
-    public void deleteImage(final Long resourceId, final String location) {
+    public void deleteImage(final String location) {
         final boolean fileDeleted = deleteFile(location);
         if (!fileDeleted) {
             // no need to throw an Error, simply log a warning
@@ -87,7 +87,7 @@ public class FileSystemContentRepository implements ContentRepository {
     }
 
     @Override
-    public void deleteFile(final String fileName, final String documentPath) {
+    public void deleteFile(final String documentPath) {
         final boolean fileDeleted = deleteFile(documentPath);
         if (!fileDeleted) {
             throw new ContentManagementException(fileName, null);
