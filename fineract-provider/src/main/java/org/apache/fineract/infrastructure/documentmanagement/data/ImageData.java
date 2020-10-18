@@ -21,7 +21,6 @@ package org.apache.fineract.infrastructure.documentmanagement.data;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.fineract.infrastructure.documentmanagement.contentrepository.ContentRepositoryUtils;
@@ -101,36 +100,5 @@ public class ImageData {
 
     public String getEntityDisplayName() {
         return this.entityDisplayName;
-    }
-
-    public boolean available() {
-        int available = -1; // not -1
-        if (this.storageType.equals(StorageType.S3) && this.inputStream != null) {
-            try {
-                available = this.inputStream.available();
-            } catch (IOException e) {
-                LOG.error("Error occured.", e);
-            }
-        } else if (this.storageType.equals(StorageType.FILE_SYSTEM) && this.file != null) {
-            FileInputStream fileInputStream = null;
-            try {
-                fileInputStream = new FileInputStream(this.file);
-                available = fileInputStream.available();
-                fileInputStream.close();
-            } catch (FileNotFoundException e) {
-                LOG.error("Error occured.", e);
-            } catch (IOException e) {
-                LOG.error("Error occured.", e);
-            } finally {
-                if (fileInputStream != null) {
-                    try {
-                        fileInputStream.close();
-                    } catch (IOException e) {
-                        LOG.error("Problem occurred in available function", e);
-                    }
-                }
-            }
-        }
-        return available >= 0;
     }
 }
