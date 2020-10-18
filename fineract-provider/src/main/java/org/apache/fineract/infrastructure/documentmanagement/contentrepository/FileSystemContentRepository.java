@@ -106,10 +106,9 @@ public class FileSystemContentRepository implements ContentRepository {
     }
 
     @Override
-    public ImageData fetchImage(final ImageData imageData) {
+    public FileData fetchImage(final ImageData imageData) {
         final File file = new File(imageData.location());
-        imageData.updateContent(file);
-        return imageData;
+        return new FileData(file, imageData.fileName(), imageData.contentType());
     }
 
     @Override

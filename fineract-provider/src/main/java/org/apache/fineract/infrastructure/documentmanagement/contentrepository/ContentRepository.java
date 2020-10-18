@@ -46,7 +46,7 @@ public interface ContentRepository {
 
     void deleteImage(Long resourceId, String location);
 
-    ImageData fetchImage(ImageData imageData);
+    FileData fetchImage(ImageData imageData);
 
     StorageType getStorageType();
 

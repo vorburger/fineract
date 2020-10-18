@@ -18,27 +18,16 @@
  */
 package org.apache.fineract.infrastructure.documentmanagement.data;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.fineract.infrastructure.documentmanagement.contentrepository.ContentRepositoryUtils;
+import org.apache.fineract.infrastructure.documentmanagement.contentrepository.ContentRepositoryUtils.ImageFileExtension;
 import org.apache.fineract.infrastructure.documentmanagement.domain.StorageType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ImageData {
-
-    private static final Logger LOG = LoggerFactory.getLogger(ImageData.class);
 
     private final String location;
     private final StorageType storageType;
     private final String entityDisplayName;
-
-    private File file;
-    private ContentRepositoryUtils.ImageFileExtension fileExtension;
-    private InputStream inputStream;
 
     public ImageData(final String location, final StorageType storageType, final String entityDisplayName) {
         this.location = location;
@@ -46,44 +35,18 @@ public class ImageData {
         this.entityDisplayName = entityDisplayName;
     }
 
-    private void setImageFileExtension(String filename) {
-        fileExtension = ContentRepositoryUtils.ImageFileExtension.JPEG;
+    public String contentType() {
+        return ContentRepositoryUtils.ImageMIMEtype.fromFileExtension(getFileExtension()).getValue();
+    }
+
+    public ContentRepositoryUtils.ImageFileExtension getFileExtension() {
+        ImageFileExtension fileExtension = ContentRepositoryUtils.ImageFileExtension.JPEG;
 
         if (StringUtils.endsWith(filename.toLowerCase(), ContentRepositoryUtils.ImageFileExtension.GIF.getValue())) {
             fileExtension = ContentRepositoryUtils.ImageFileExtension.GIF;
         } else if (StringUtils.endsWith(filename, ContentRepositoryUtils.ImageFileExtension.PNG.getValue())) {
             fileExtension = ContentRepositoryUtils.ImageFileExtension.PNG;
         }
-    }
-
-    public void updateContent(final File file) {
-        this.file = file;
-        if (this.file != null) {
-            setImageFileExtension(this.file.getName());
-        }
-    }
-
-    public void updateContent(final InputStream objectContent) {
-        this.inputStream = objectContent;
-    }
-
-    public InputStream getInputStream() {
-        if (this.file != null) {
-            try {
-                return new FileInputStream(this.file);
-            } catch (FileNotFoundException e) {
-                throw new IllegalStateException("FileNotFoundException: " + file, e);
-            }
-        }
-        return this.inputStream;
-    }
-
-    public String contentType() {
-        return ContentRepositoryUtils.ImageMIMEtype.fromFileExtension(this.fileExtension).getValue();
-    }
-
-    public ContentRepositoryUtils.ImageFileExtension getFileExtension() {
-        return this.fileExtension;
     }
 
     public StorageType storageType() {
