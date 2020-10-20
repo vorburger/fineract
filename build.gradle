@@ -334,6 +334,7 @@ allprojects  {
             // Git build info
             "**/git.properties",
             ".mailmap",
+            ".openapi-generator-ignore",
         ]
     }
 }
