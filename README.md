@@ -42,6 +42,8 @@ Run the following commands:
 1. `./gradlew createDB -PdbName=fineract_default`
 1. `./gradlew bootRun`
 
+Note that since [FINERACT-931](https://issues.apache.org/jira/browse/FINERACT-931) we include the [Spring Boot Developer Tools](https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-devtools-restart), which will cause _Automatic Restarts_ while running Fineract in _developer mode_ by `bootRun`.  (Spring Boot will disable this when running in production launched from `java -jar`.)  Note known open bug [FINERACT-1228](https://issues.apache.org/jira/browse/FINERACT-1228).
+
 
 Instructions to build the JAR file
 ============

@@ -142,4 +142,7 @@ dependencies {
         exclude group: 'com.jayway.jsonpath', module: 'json-path'
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+
+    // see https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-devtools
+    developmentOnly('org.springframework.boot:spring-boot-devtools')
 }

@@ -18,7 +18,6 @@
  */
 description = 'Fineract Provider'
 
-apply plugin: 'rebel'
 apply plugin: 'war'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'com.bmuschko.cargo'
