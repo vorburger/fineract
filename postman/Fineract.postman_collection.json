@@ -1,0 +1,1187 @@
+{
+	"info": {
+		"_postman_id": "b7750b65-e47b-442d-b105-0407475be8af",
+		"name": "Fineract",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Scheduler & Jobs",
+			"item": [
+				{
+					"name": "/authentication",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "78f84f00-3966-4761-88dc-ef91b5c291c0",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Username is mifos\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.username).to.eql(\"mifos\");",
+									"    ",
+									"    pm.globals.set(\"base64EncodedAuthenticationKey\", jsonData.base64EncodedAuthenticationKey);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"mifos\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v1/authentication",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authentication"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/scheduler getSchedulerStatus()",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7b5930ff-eb23-432b-8e36-25c1273d229c",
+								"exec": [
+									"pm.globals.get(\"variable_key\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "b0c7d81c-70ae-4fad-b620-49cd3ead5c8d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"value": "default",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic {{base64EncodedAuthenticationKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/api/v1/scheduler",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"scheduler"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/scheduler?command=stop updateSchedulerStatus()",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8abde188-c9ca-44d3-a75e-0832dbcfb317",
+								"exec": [
+									"pm.globals.get(\"variable_key\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3ae54f47-ca2d-4a3f-a78a-3b39fe934ae8",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"type": "text",
+								"value": "default"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{base64EncodedAuthenticationKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/api/v1/scheduler?command=stop",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"scheduler"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "stop"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/jobs getAllSchedulerJobs()",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "33fd60f7-a383-4065-8cc5-148b37fe9eb2",
+								"exec": [
+									"pm.globals.get(\"variable_key\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "415d27f4-adf2-4a03-bc39-c903bde05938",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"value": "default",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic {{base64EncodedAuthenticationKey}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/api/v1/jobs",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"jobs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/jobs/1 getSchedulerJobById()",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "20eee2d9-39ab-4e79-b3c1-8958fd76968a",
+								"exec": [
+									"pm.globals.get(\"variable_key\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "84d80072-9584-45f2-b2c7-352b42386162",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"type": "text",
+								"value": "default"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{base64EncodedAuthenticationKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/api/v1/jobs/6",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"jobs",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/jobs/1 active=true updateSchedulerJob(true)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "17cecf09-e964-4059-a11f-c58d9a92df53",
+								"exec": [
+									"pm.globals.get(\"variable_key\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "eaab4b08-47ea-4abd-9425-b619c113ba2a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"type": "text",
+								"value": "default"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{base64EncodedAuthenticationKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"active\": true }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v1/jobs/1",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"jobs",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/jobs/1?command=executeJob runSchedulerJob()",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f9d2f68b-9ab8-4ff1-bd6d-f070d21a7e86",
+								"exec": [
+									"pm.globals.get(\"variable_key\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "398f4d01-8349-4bbe-8b1b-a6f45e6c9241",
+								"exec": [
+									"pm.test(\"Status code is 202\", function () {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"type": "text",
+								"value": "default"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{base64EncodedAuthenticationKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/api/v1/jobs/6?command=executeJob",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"jobs",
+								"6"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "executeJob"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/jobs/1 getSchedulerJobById()",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1749eb60-1ee7-4166-b567-252093e680ae",
+								"exec": [
+									"pm.globals.get(\"variable_key\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "edca3370-84dc-41a0-aade-d54646518693",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"type": "text",
+								"value": "default"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{base64EncodedAuthenticationKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/api/v1/jobs/1",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"jobs",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/jobs/1 active=false updateSchedulerJob(false)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9a1e11ed-c34a-400a-aa38-89b272bdb4ea",
+								"exec": [
+									"pm.globals.get(\"variable_key\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "7a9dff6b-25ff-4805-880f-c6e81756e4df",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"type": "text",
+								"value": "default"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{base64EncodedAuthenticationKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"active\": false }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v1/jobs/1",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"jobs",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/jobs/1/runhistory getSchedulerJobHistory()",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "22592916-8fe2-4a27-9dc6-871a8c8f1c86",
+								"exec": [
+									"pm.globals.get(\"variable_key\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "6f3a1d38-9ebb-433b-bb41-5e746f26d947",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"type": "text",
+								"value": "default"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic {{base64EncodedAuthenticationKey}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"active\": false }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/v1/jobs/1/runhistory",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"jobs",
+								"1",
+								"runhistory"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "as in org.apache.fineract.integrationtests.SchedulerJobsTest",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "OAuth",
+			"item": [
+				{
+					"name": "OAuth uid/pwd in URL - bad (FINERACT-629)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"value": "default",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/api/oauth/token?username=mifos&password=password&client_id=community-app&grant_type=password&client_secret=123",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"oauth",
+								"token"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "mifos"
+								},
+								{
+									"key": "password",
+									"value": "password"
+								},
+								{
+									"key": "client_id",
+									"value": "community-app"
+								},
+								{
+									"key": "grant_type",
+									"value": "password"
+								},
+								{
+									"key": "client_secret",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OAuth",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Fineract-Platform-TenantId",
+										"value": "default",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{API_URL}}/api/oauth/token?username=mifos&password=password&client_id=community-app&grant_type=password&client_secret=123",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"oauth",
+										"token"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "mifos"
+										},
+										{
+											"key": "password",
+											"value": "password"
+										},
+										{
+											"key": "client_id",
+											"value": "community-app"
+										},
+										{
+											"key": "grant_type",
+											"value": "password"
+										},
+										{
+											"key": "client_secret",
+											"value": "123"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, PUT, DELETE, OPTIONS"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-store"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json;charset=UTF-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 10 Sep 2020 20:40:01 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"Pxb0mJ-u69NRqiu837biXqhZyx4\",\n    \"token_type\": \"bearer\",\n    \"refresh_token\": \"iNZEsSN8jvS-pBpk5zzU5akQHpo\",\n    \"expires_in\": 3599,\n    \"scope\": \"all\"\n}"
+						}
+					]
+				},
+				{
+					"name": "OAuth uid/pwd in Body - good (FINERACT-629)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"type": "text",
+								"value": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "mifos",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "community-app",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "123",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/oauth/token",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OAuth",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Fineract-Platform-TenantId",
+										"value": "default",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{API_URL}}/api/oauth/token?username=mifos&password=password&client_id=community-app&grant_type=password&client_secret=123",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"oauth",
+										"token"
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "mifos"
+										},
+										{
+											"key": "password",
+											"value": "password"
+										},
+										{
+											"key": "client_id",
+											"value": "community-app"
+										},
+										{
+											"key": "grant_type",
+											"value": "password"
+										},
+										{
+											"key": "client_secret",
+											"value": "123"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Methods",
+									"value": "GET, POST, PUT, DELETE, OPTIONS"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-store"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json;charset=UTF-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 10 Sep 2020 20:40:01 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"Pxb0mJ-u69NRqiu837biXqhZyx4\",\n    \"token_type\": \"bearer\",\n    \"refresh_token\": \"iNZEsSN8jvS-pBpk5zzU5akQHpo\",\n    \"expires_in\": 3599,\n    \"scope\": \"all\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Clients (with OAuth Token)",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"value": "default",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "bearer RzfUyQ0wEnxxq4PyFCF1J-XGFCI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/api/v1/clients",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Reporting",
+			"item": [
+				{
+					"name": "Client Listing",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "mifos",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"type": "text",
+								"value": "default"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/api/v1/runreports/Client%20Listing?isSelfServiceUserReport=false&R_officeId=1",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"runreports",
+								"Client%20Listing"
+							],
+							"query": [
+								{
+									"key": "isSelfServiceUserReport",
+									"value": "false"
+								},
+								{
+									"key": "R_officeId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expected Payments By Date - Pentaho PDF",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "mifos",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Fineract-Platform-TenantId",
+								"type": "text",
+								"value": "default"
+							}
+						],
+						"url": {
+							"raw": "{{API_URL}}/api/v1/runreports/Expected%20Payments%20By%20Date%20-%20Formatted?R_endDate=2013-04-30&R_loanOfficerId=-1&R_officeId=1&R_startDate=2013-04-16&output-type=PDF&R_officeId=1",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"runreports",
+								"Expected%20Payments%20By%20Date%20-%20Formatted"
+							],
+							"query": [
+								{
+									"key": "R_endDate",
+									"value": "2013-04-30"
+								},
+								{
+									"key": "R_loanOfficerId",
+									"value": "-1"
+								},
+								{
+									"key": "R_officeId",
+									"value": "1"
+								},
+								{
+									"key": "R_startDate",
+									"value": "2013-04-16"
+								},
+								{
+									"key": "output-type",
+									"value": "PDF"
+								},
+								{
+									"key": "R_officeId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Clients",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "mifos",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Fineract-Platform-TenantId",
+						"type": "text",
+						"value": "default"
+					}
+				],
+				"url": {
+					"raw": "{{API_URL}}/api/v1/clients",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"clients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Offices",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "mifos",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Fineract-Platform-TenantId",
+						"type": "text",
+						"value": "default"
+					}
+				],
+				"url": {
+					"raw": "{{API_URL}}/api/v1/offices",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"offices"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

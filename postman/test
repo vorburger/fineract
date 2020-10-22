@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ $# != 1 ]; then
+    echo "USAGE: test {environment}"
+    exit -1
+fi
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+set +x
+docker run --rm -t \
+    -v $DIR:/etc/newman:Z \
+    postman/newman run Fineract.postman_collection.json --environment $1.postman_environment.json
+
+# see https://github.com/postmanlabs/newman/tree/develop/docker#running-local-collection-files
+# and https://github.com/postmanlabs/newman
+
+# PS NB :Z in -v (instead of --label=disable --security-opt label=disable)
+# is required for this to work on Fedora; see https://github.com/containers/podman/issues/3683.
