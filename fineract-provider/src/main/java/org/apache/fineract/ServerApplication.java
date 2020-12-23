@@ -40,8 +40,9 @@ import org.springframework.context.annotation.ImportResource;
  * It's the old/classic Mifos (non-X) Workspace 2.0 reborn for Fineract! ;-)
  *
  * @see ServerWithMariaDB4jApplication for an alternative with an embedded DB
+ *
+ * @author Michael Vorburger.ch
  */
-
 public class ServerApplication extends SpringBootServletInitializer {
 
     @Import({ EmbeddedTomcatWithSSLConfiguration.class })

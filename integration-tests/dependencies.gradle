@@ -40,6 +40,7 @@ dependencies {
         exclude group: 'org.apache.sling'
         exclude group: 'com.sun.xml.bind'
     }
+    testImplementation ('com.icegreen:greenmail-junit5:1.6.1')
     testRuntimeOnly(
             'org.junit.jupiter:junit-jupiter-engine:5.7.0'
             )

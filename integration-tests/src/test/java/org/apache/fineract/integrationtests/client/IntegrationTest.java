@@ -26,6 +26,7 @@ import com.google.common.truth.FloatSubject;
 import com.google.common.truth.IntegerSubject;
 import com.google.common.truth.IterableSubject;
 import com.google.common.truth.LongSubject;
+import com.google.common.truth.ObjectArraySubject;
 import com.google.common.truth.OptionalSubject;
 import com.google.common.truth.StringSubject;
 import com.google.common.truth.Subject;
@@ -96,6 +97,10 @@ public abstract class IntegrationTest {
 
     // as above, this avoids issues with e.g. the Eclipse compiler getting confused which assertThat is which
     public static IterableSubject assertThat(Iterable<?> actual) {
+        return Truth.assertThat(actual);
+    }
+
+    public static <T> ObjectArraySubject<T> assertThat(T[] actual) {
         return Truth.assertThat(actual);
     }
 
