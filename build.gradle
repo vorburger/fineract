@@ -509,7 +509,6 @@ configure(project.fineractJavaProjects) {
                     "EmptyBlockTag",
                     "MissingSummary",
                     "InvalidParam",
-                    "ReturnFromVoid",
                     "AlmostJavadoc",
                     "InvalidBlockTag",
                     )
